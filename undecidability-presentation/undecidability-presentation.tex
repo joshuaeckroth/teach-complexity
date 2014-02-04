@@ -84,7 +84,7 @@
 
 \begin{frame}{String encodings of Turing Machines}
 
-  First, we must allow a Turing Machine $M$ to be encoded into a
+  First, we must allow a Turing Machine $M$ to be encoded as a
   string \str{M}.
 
   \vskip 0.25in
@@ -101,8 +101,8 @@
 
 \begin{frame}{A fancy analyzer of Turing Machines}
 
-  Suppose we wrote a function, \func{FancyAnalyze}(\str{M},$w$), that could do the
-  following:
+  Suppose we have a function, \func{FancyAnalyze}(\str{M},$w$), that
+  can do the following:
 
   \begin{itemize}
 
@@ -285,7 +285,10 @@
 
 \begin{frame}{Definition: Decides}
 
-  foobar
+  We say that a machine $M$ \textit{decides} a language $L$ if for every $w
+  \in L$, $M$ with input $w$ halts with the answer \textit{accept} and for
+  every $\overline{w} \notin L$, $M$ with input $\overline{w}$ halts
+  with the answer \textit{reject}.
 
 \end{frame}
 
@@ -298,7 +301,7 @@
 \begin{frame}{Undecidable!}
 
   So \func{FancyAnalyze} cannot exist (as a decider). The \textit{language}
-  it would have decided was,
+  it would have decided is,
 
   \begin{equation*}
     \text{ACCEPT}_{\text{TM}} = \{ (\langle M \rangle, w) : M \text{
@@ -354,7 +357,9 @@
 
 \begin{frame}{Definition: Accepts}
 
-  aka recognizes
+  We say that a machine $M$ \textit{accepts} (or \textit{recognizes}) a language
+  $L$ if for every $w \in L$, $M$ with input $w$ halts with the answer
+  \textit{accept}.
 
 \end{frame}
 
@@ -366,7 +371,46 @@
 
 \begin{frame}{$\text{Acc}+\overline{\text{Acc}}=\text{Dec}$}
 
-  foobar
+  \begin{itemize}
+
+  \item Suppose we have a machine $M$ that accepts a language $\text{Acc}$.
+
+  \item Consider the language $\overline{\text{Acc}}$, i.e., the language
+    $\{\overline{w} : \overline{w} \notin \text{Acc}\}$.
+
+  \item Suppose we have a machine $\overline{M}$ that accepts
+    $\overline{\text{Acc}}$.
+
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}{$\text{Acc}+\overline{\text{Acc}}=\text{Dec}$}
+
+  \begin{itemize}
+
+  \item By simulating $M$ and $\overline{M}$ in \textit{parallel}, we can build
+    a decider for both $\text{Acc}$ and $\overline{\text{Acc}}$. Here
+    it is for $\text{Acc}$:
+
+    \begin{algorithmic}[0]
+      \Function{\func{$M_{\text{decider for Acc}}$}}{$w$}
+
+      \While{true}
+      \State $m \gets \func{SimulateOneStep}($\str{M}$, w)$
+      \State $\overline{m} \gets \func{SimulateOneStep}($\str{\overline{M}}$, w)$
+
+      \If{$m = $ \textit{accept}}
+      \Return \textit{accept}
+      \ElsIf{$\overline{m} = $ \textit{accept}}
+      \Return \textit{reject}
+      \EndIf
+      \EndWhile
+
+      \EndFunction
+    \end{algorithmic}
+
+  \end{itemize}
 
 \end{frame}
 
@@ -449,7 +493,7 @@
     program (including itself) and determine whether it is bug-free.
 
   \item Rice's theorem: There is no mechanical procedure to decide the
-    answer to \textit{every} non-trivial question about machines.
+    answer to \textit{any} non-trivial question about \textit{every} machine.
 
   \item More importantly: There is no mechanical procedure to decide the
     answer to every mathematical question about the natural numbers.
